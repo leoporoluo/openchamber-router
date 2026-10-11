@@ -1,5 +1,5 @@
 /**
- * ocber-router —— 本地服务进程入口。
+ * openchamber-router —— 本地服务进程入口。
  *
  * 由 OpenChamber 宿主按 manifest `contributes.service` 拉起，环境里给
  * `OPENCHAMBER_SERVICE_PORT` 与 `OPENCHAMBER_SERVICE_TOKEN`。服务额外在
@@ -13,7 +13,7 @@ import { resolveDataDir } from '../src/service/store.ts'
 
 function log(message: string): void {
   // stderr 由宿主收进扩展日志，stdout 留空避免污染
-  console.error(`[ocber-router] ${message}`)
+  console.error(`[openchamber-router] ${message}`)
 }
 
 async function main(): Promise<void> {

@@ -20,7 +20,7 @@ function resolveExtensionDir() {
   return dirname(dirname(fileURLToPath(import.meta.url)));
 }
 function resolveDataDir() {
-  const override = (process.env.OCBER_DATA_DIR ?? "").trim();
+  const override = (process.env.OPENCHAMBER_DATA_DIR ?? "").trim();
   if (override !== "")
     return override;
   return join(resolveExtensionDir(), "data");
@@ -246,7 +246,7 @@ class KeysStore {
     const entry = {
       id: randomBytes(6).toString("hex"),
       name: name.trim() !== "" ? name.trim() : `Key ${this.keys.length + 1}`,
-      key: `ocber-${randomBytes(24).toString("hex")}`,
+      key: `openchamber-${randomBytes(24).toString("hex")}`,
       isActive: true,
       createdAt: new Date().toISOString()
     };
@@ -1408,7 +1408,7 @@ async function startServer(app, serviceToken, adminPort) {
       if (req.method === "POST" && url.pathname === "/v1/chat/completions") {
         const parsed = await readJsonBody(req);
         if (!parsed.ok || parsed.body === undefined) {
-          console.error(`[ocber-router] /v1/chat/completions body rejected: ${parsed.error ?? "unknown"} | ${parsed.detail ?? ""}`);
+          console.error(`[openchamber-router] /v1/chat/completions body rejected: ${parsed.error ?? "unknown"} | ${parsed.detail ?? ""}`);
           writeJson2(res, 400, {
             error: { message: parsed.error ?? "请求体不合法", type: "invalid_request_error", param: null, code: null }
           });
@@ -2312,7 +2312,7 @@ import { existsSync as existsSync2, mkdirSync as mkdirSync3, readFileSync as rea
 import { createHash as createHash2 } from "node:crypto";
 import { dirname as dirname3, join as join3 } from "node:path";
 import { homedir } from "node:os";
-var OPENCODE_PROVIDER_ID = "ocber";
+var OPENCODE_PROVIDER_ID = "openchamber";
 function opencodeConfigPath() {
   return join3(homedir(), ".config", "opencode", "opencode.json");
 }
@@ -2367,7 +2367,7 @@ function syncOpencode(app, force = false) {
     const providers = existing !== null && typeof existing === "object" && !Array.isArray(existing) ? { ...existing } : {};
     const activeKey = app.keys.requireApiKey ? app.keys.firstActiveKey() : undefined;
     providers[OPENCODE_PROVIDER_ID] = {
-      name: "OCBer Router",
+      name: "OpenChamber Router",
       package: "aisdk:@ai-sdk/openai-compatible",
       settings: {
         baseURL: app.endpoint(),
@@ -2379,7 +2379,7 @@ function syncOpencode(app, force = false) {
     const dir = dirname3(path);
     if (dir !== "" && dir !== ".")
       mkdirSync3(dir, { recursive: true });
-    const tmp = `${path}.ocber.tmp`;
+    const tmp = `${path}.openchamber.tmp`;
     writeFileSync3(tmp, `${JSON.stringify(config, null, 2)}
 `, { mode: 384 });
     renameSync3(tmp, path);
@@ -3152,7 +3152,7 @@ class App {
 
 // service/main.ts
 function log(message) {
-  console.error(`[ocber-router] ${message}`);
+  console.error(`[openchamber-router] ${message}`);
 }
 async function main() {
   const adminPort = Number(process.env.OPENCHAMBER_SERVICE_PORT);

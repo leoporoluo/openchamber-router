@@ -179,7 +179,7 @@ export async function startServer(app: App, serviceToken: string, adminPort: num
       if (req.method === 'POST' && url.pathname === '/v1/chat/completions') {
         const parsed = await readJsonBody(req)
         if (!parsed.ok || parsed.body === undefined) {
-          console.error(`[ocber-router] /v1/chat/completions body rejected: ${parsed.error ?? 'unknown'} | ${parsed.detail ?? ''}`)
+          console.error(`[openchamber-router] /v1/chat/completions body rejected: ${parsed.error ?? 'unknown'} | ${parsed.detail ?? ''}`)
           writeJson(res, 400, {
             error: { message: parsed.error ?? '请求体不合法', type: 'invalid_request_error', param: null, code: null },
           })

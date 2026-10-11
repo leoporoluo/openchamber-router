@@ -1,5 +1,5 @@
 /**
- * OCBer Router —— 扩展面板。
+ * OpenChamber Router —— 扩展面板。
  *
  * 面板只做两件事：向本地服务要数据、把数据画成 OpenChamber 原生样子的界面。
  * 所有上游访问都在服务进程里（面板是沙箱 iframe，不直连网络），面板通过
@@ -42,7 +42,7 @@ import type {
 
 const COPY = {
   zh: {
-    title: 'OCBer Router',
+    title: 'OpenChamber Router',
     subtitle: 'OpenAI 兼容路由',
     tabOverview: '概览',
     tabSuppliers: '供应商',
@@ -50,7 +50,7 @@ const COPY = {
     tabEndpoint: '端点与密钥',
     refresh: '刷新',
     loading: '加载中',
-    serviceHint: '本地服务未就绪。请在「设置 → 扩展」里授权 OCBer Router 的本地服务，然后重新打开面板。',
+    serviceHint: '本地服务未就绪。请在「设置 → 扩展」里授权 OpenChamber Router 的本地服务，然后重新打开面板。',
     disabled: '该扩展已在「设置 → 扩展」中暂停。',
     timeout: '服务无响应（超时）。',
     noData: '暂无数据',
@@ -129,7 +129,7 @@ const COPY = {
     modelWord: '模型',
     opencodeTitle: 'OpenCode 同步',
     opencodeSync: '自动写入 provider 配置',
-    opencodeSyncHint: '把本端点写成 opencode.json 里的 providers.ocber（只改这一个键，其余内容原样保留）。同步后重启 OpenCode（或重新加载模型）即可在模型选择里看到模型与组合。',
+    opencodeSyncHint: '把本端点写成 opencode.json 里的 providers.openchamber（只改这一个键，其余内容原样保留）。同步后重启 OpenCode（或重新加载模型）即可在模型选择里看到模型与组合。',
     syncNow: '立即同步',
     syncAt: '上次同步',
     syncNever: '从未',
@@ -158,7 +158,7 @@ const COPY = {
     tpsPaused: '暂停',
   },
   en: {
-    title: 'OCBer Router',
+    title: 'OpenChamber Router',
     subtitle: 'OpenAI-compatible router',
     tabOverview: 'Overview',
     tabSuppliers: 'Suppliers',
@@ -166,7 +166,7 @@ const COPY = {
     tabEndpoint: 'Endpoint & keys',
     refresh: 'Refresh',
     loading: 'Loading',
-    serviceHint: 'Local service is not ready. Approve the OCBer Router local service in Settings → Extensions, then reopen the panel.',
+    serviceHint: 'Local service is not ready. Approve the OpenChamber Router local service in Settings → Extensions, then reopen the panel.',
     disabled: 'The extension is paused in Settings → Extensions.',
     timeout: 'The service did not answer (timeout).',
     noData: 'No data',
@@ -245,7 +245,7 @@ const COPY = {
     modelWord: 'models',
     opencodeTitle: 'OpenCode sync',
     opencodeSync: 'Write provider config automatically',
-    opencodeSyncHint: 'Writes this endpoint as providers.ocber in opencode.json (that key only; everything else stays as is). Restart OpenCode (or reload models) to see the models and combos in the picker.',
+    opencodeSyncHint: 'Writes this endpoint as providers.openchamber in opencode.json (that key only; everything else stays as is). Restart OpenCode (or reload models) to see the models and combos in the picker.',
     syncNow: 'Sync now',
     syncAt: 'Last sync',
     syncNever: 'never',
@@ -1349,7 +1349,7 @@ function renderEndpoint(): HTMLElement {
 
   wrap.append(cardWithTitle(copy.endpoint, null, [endpointRow, portRow, requireRow]))
 
-  // OpenCode provider 自动同步（服务的 opencode-sync 写 opencode.json 的 providers.ocber）
+  // OpenCode provider 自动同步（服务的 opencode-sync 写 opencode.json 的 providers.openchamber）
   const sync = state?.opencode
   const syncRow = toggleRow(copy.opencodeSync, copy.opencodeSyncHint, sync?.enabled ?? false, (value) => {
     void api('POST', '/api/settings', { opencodeSync: value })

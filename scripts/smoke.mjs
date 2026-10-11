@@ -2,7 +2,7 @@
  * 本地冒烟测试：用宿主约定的环境变量把 service/main.js 拉起来，验证
  *   - 管理端口鉴权、/api/state、/v1/models、未知模型 404、对外端口绑定
  *   - 没账号的供应商：模型不列出、不进 provider
- *   - opencode.json provider 同步：新增 providers.ocber、保留其它 provider、
+ *   - opencode.json provider 同步：新增 providers.openchamber、保留其它 provider、
  *     只写 `别名/模型` + 组合（不写裸名，避免重复）、组合进入两张表
  *   - 大请求体（>8MB）与 gzip 请求体都能正常解析（不再误报「不是合法 JSON」）
  *
@@ -19,10 +19,10 @@ import { fileURLToPath } from 'node:url'
 const root = join(dirname(fileURLToPath(import.meta.url)), '..')
 const adminPort = 39000 + Math.floor(Math.random() * 2000)
 const token = 'smoke-token'
-const dataDir = mkdtempSync(join(tmpdir(), 'ocber-smoke-data-'))
-const homeDir = mkdtempSync(join(tmpdir(), 'ocber-smoke-home-'))
+const dataDir = mkdtempSync(join(tmpdir(), 'openchamber-smoke-data-'))
+const homeDir = mkdtempSync(join(tmpdir(), 'openchamber-smoke-home-'))
 
-// 假的用户 opencode.json：同步时除了 providers.ocber，其它必须原样保留
+// 假的用户 opencode.json：同步时除了 providers.openchamber，其它必须原样保留
 const opencodeDir = join(homeDir, '.config', 'opencode')
 mkdirSync(opencodeDir, { recursive: true })
 const opencodeFile = join(opencodeDir, 'opencode.json')
@@ -38,7 +38,7 @@ const child = spawn(process.execPath, [join(root, 'service', 'main.js')], {
     ...process.env,
     OPENCHAMBER_SERVICE_PORT: String(adminPort),
     OPENCHAMBER_SERVICE_TOKEN: token,
-    OCBER_DATA_DIR: dataDir,
+    OPENCHAMBER_DATA_DIR: dataDir,
     HOME: homeDir,
     USERPROFILE: homeDir,
   },
@@ -118,8 +118,8 @@ try {
   check('existing provider keepme preserved', JSON.stringify(cfg.providers?.keepme) === JSON.stringify(originalProviders.keepme))
   check('existing provider other preserved', JSON.stringify(cfg.providers?.other) === JSON.stringify(originalProviders.other))
   check('native provider key untouched', JSON.stringify(cfg.provider) === '{}')
-  check('providers.ocber written', typeof cfg.providers?.ocber?.settings?.baseURL === 'string' && cfg.providers.ocber.settings.baseURL.endsWith('/v1'), JSON.stringify(cfg.providers?.ocber?.settings))
-  check('no-account supplier models stay out of provider', Object.keys(cfg.providers?.ocber?.models ?? {}).length === 0, JSON.stringify(Object.keys(cfg.providers?.ocber?.models ?? {})))
+  check('providers.openchamber written', typeof cfg.providers?.openchamber?.settings?.baseURL === 'string' && cfg.providers.openchamber.settings.baseURL.endsWith('/v1'), JSON.stringify(cfg.providers?.openchamber?.settings))
+  check('no-account supplier models stay out of provider', Object.keys(cfg.providers?.openchamber?.models ?? {}).length === 0, JSON.stringify(Object.keys(cfg.providers?.openchamber?.models ?? {})))
 
   // 组合：别名形式在任何账号状态下都可解析
   const comboRes = await admin('/api/combos/set', { method: 'POST', body: JSON.stringify({ name: 'smoke-combo', targets: ['codebuddy/glm-5.3', 'codebuddy-en/glm-5.3'] }) })
@@ -128,7 +128,7 @@ try {
 
   await admin('/api/opencode/sync', { method: 'POST' })
   const cfg2 = readConfig()
-  const ids = Object.keys(cfg2.providers?.ocber?.models ?? {})
+  const ids = Object.keys(cfg2.providers?.openchamber?.models ?? {})
   check('combo synced into provider models', ids.includes('smoke-combo'), JSON.stringify(ids))
   check('combos-only mode writes nothing else', ids.length === 1, JSON.stringify(ids))
   check('no bare duplicate of a model id', !ids.includes('glm-5.3'), JSON.stringify(ids))

@@ -27,7 +27,7 @@ check('manifest parses', parsed.ok === true, parsed.ok ? '' : JSON.stringify(par
 if (parsed.ok) {
   const contributes = parsed.manifest.contributes ?? {}
   const panel = contributes.panel
-  check('panel id', panel?.id === 'ocber-router', String(panel?.id))
+  check('panel id', panel?.id === 'openchamber-router', String(panel?.id))
   check('panel entry declared', typeof panel?.entry === 'string')
   if (typeof panel?.icon === 'string' && panel.icon.toLowerCase().endsWith('.svg')) {
     check('panel icon exists', existsSync(join(root, panel.icon)), panel.icon)

@@ -1,4 +1,4 @@
-# ocber-router
+# openchamber-router
 
 OpenChamber 扩展：把 [dsh-router](https://github.com/CARVIN94/dsh-router) 的
 **OpenAI 兼容路由核心**与 [dsh-router-codebuddy](https://github.com/CARVIN94/dsh-router-codebuddy)
@@ -31,15 +31,15 @@ http://127.0.0.1:20128/v1
 | 推理等级 | 客户端显式要求时透传（OpenCode 变体 `settings.reasoningEffort` → `reasoning_effort`）；未要求则不带，避免上游内容过滤 |
 | 用量看板 | 今日 / 24 小时 / 7 天 / 30 天，请求数、成功率、token、耗时与趋势图 |
 | TPS 仪表盘 | 概览置顶：近 5 秒生成速率（tok/s）、上一轮平均、会话 token、事件流状态（服务订阅 OpenChamber 事件流计算，思路来自 openchamber-tps） |
-| OpenCode 同步 | 自动把组合写成 `providers.ocber`（只改这一个键，其余配置原样保留） |
+| OpenCode 同步 | 自动把组合写成 `providers.openchamber`（只改这一个键，其余配置原样保留） |
 
 ## 安装
 
 需要 OpenChamber **≥ 2.0.0**（`contributes.service` 本地服务机制），Web 或桌面端。
 
 ```bash
-git clone https://github.com/leoporoluo/ocber-router.git
-cd ocber-router
+git clone https://github.com/leoporoluo/openchamber-router.git
+cd openchamber-router
 npm install
 npm run build        # 产出 panel/main.js 与 service/main.js
 ```
@@ -73,7 +73,7 @@ curl -X POST http://127.0.0.1:20128/v1/chat/completions \
 ### 在 OpenCode / OpenChamber 里用
 
 面板「端点与密钥 → **OpenCode 同步**」默认开启：服务会把本端点写成
-`~/.config/opencode/opencode.json` 里 `providers.ocber` 的 provider
+`~/.config/opencode/opencode.json` 里 `providers.openchamber` 的 provider
 （只改这一个键，其余配置原样保留），模型与组合自动跟进。重启 OpenCode /
 重新加载模型后即可在模型选择里直接选。
 
@@ -82,8 +82,8 @@ curl -X POST http://127.0.0.1:20128/v1/chat/completions \
 ```jsonc
 {
   "providers": {
-    "ocber": {
-      "name": "OCBer Router",
+    "openchamber": {
+      "name": "OpenChamber Router",
       "package": "aisdk:@ai-sdk/openai-compatible",
       "settings": { "baseURL": "http://127.0.0.1:20128/v1" },
       "models": {
@@ -99,7 +99,7 @@ curl -X POST http://127.0.0.1:20128/v1/chat/completions \
 ## 常见问题
 
 - **新建的模型/组合在 OpenCode / Casleo 的模型选择里看不到**：面板「端点与密钥 → OpenCode 同步」
-  默认开启，会把本端点写成 `~/.config/opencode/opencode.json` 里 `providers.ocber`
+  默认开启，会把本端点写成 `~/.config/opencode/opencode.json` 里 `providers.openchamber`
   的 provider（只改这一个键，其余内容原样保留）。写完重启 OpenCode（或重新加载模型）即可看到。
   「同步内容」默认 **仅组合**：只有加进组合的模型才写进 provider；想连启用模型一起写就切成
   **启用模型 + 组合**。关掉开关或点「立即同步」也可手动控制。
@@ -137,7 +137,7 @@ curl -X POST http://127.0.0.1:20128/v1/chat/completions \
 
 ## 数据目录
 
-扩展安装目录下的 `data/`（可用 `OCBER_DATA_DIR` 覆盖）。数据随扩展走，卸载扩展即一并删除：
+扩展安装目录下的 `data/`（可用 `OPENCHAMBER_DATA_DIR` 覆盖）。数据随扩展走，卸载扩展即一并删除：
 
 ```
 credentials.json       供应商凭证（不透明 blob）

@@ -1,10 +1,10 @@
 /**
  * OpenCode provider 自动同步 —— 把本机端点写成 `~/.config/opencode/opencode.json`
- * 里的一个 provider（id `ocber`），这样 OpenChamber / OpenCode / Casleo 的模型
+ * 里的一个 provider（id `openchamber`），这样 OpenChamber / OpenCode / Casleo 的模型
  * 选择里能直接看到本路由器的模型与组合，不需要手动复制配置。
  *
  * 由本地服务执行（服务本来就是有用户权限的普通进程，写这个文件不需要面板的
- * filesystem 能力）：只改 `providers.ocber` 这一个键，其它内容原样保留；
+ * filesystem 能力）：只改 `providers.openchamber` 这一个键，其它内容原样保留；
  * 写盘走「临时文件 + rename」原子替换；文件不是合法 JSON 时**不动**它，
  * 只把错误报给面板。
  *
@@ -18,7 +18,7 @@ import { homedir } from 'node:os'
 import type { App } from './app.ts'
 import type { OpencodeSyncView } from '../shared/types.ts'
 
-export const OPENCODE_PROVIDER_ID = 'ocber'
+export const OPENCODE_PROVIDER_ID = 'openchamber'
 
 /** OpenCode 配置文件路径（与本机 Casleo 用的同一份）。 */
 export function opencodeConfigPath(): string {
@@ -96,7 +96,7 @@ export function syncOpencode(app: App, force = false): OpencodeSyncView {
 
     const activeKey = app.keys.requireApiKey ? app.keys.firstActiveKey() : undefined
     providers[OPENCODE_PROVIDER_ID] = {
-      name: 'OCBer Router',
+      name: 'OpenChamber Router',
       package: 'aisdk:@ai-sdk/openai-compatible',
       settings: {
         baseURL: app.endpoint(),
@@ -108,7 +108,7 @@ export function syncOpencode(app: App, force = false): OpencodeSyncView {
 
     const dir = dirname(path)
     if (dir !== '' && dir !== '.') mkdirSync(dir, { recursive: true })
-    const tmp = `${path}.ocber.tmp`
+    const tmp = `${path}.openchamber.tmp`
     writeFileSync(tmp, `${JSON.stringify(config, null, 2)}\n`, { mode: 0o600 })
     renameSync(tmp, path)
 

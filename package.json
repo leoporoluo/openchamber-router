@@ -1,15 +1,15 @@
 {
-  "name": "ocber-router",
-  "version": "0.1.16",
+  "name": "openchamber-router",
+  "version": "0.1.17",
   "private": true,
   "type": "module",
   "license": "MIT",
   "description": "OpenChamber extension: an OpenAI-compatible local router with a CodeBuddy supplier family (rail panel + local service).",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/leoporoluo/ocber-router.git"
+    "url": "git+https://github.com/leoporoluo/openchamber-router.git"
   },
-  "homepage": "https://github.com/leoporoluo/ocber-router#readme",
+  "homepage": "https://github.com/leoporoluo/openchamber-router#readme",
   "openchamber": {
     "apiVersion": 1,
     "engines": {
@@ -17,8 +17,8 @@
     },
     "contributes": {
       "panel": {
-        "id": "ocber-router",
-        "name": "OCBer Router",
+        "id": "openchamber-router",
+        "name": "OpenChamber Router",
         "icon": "icon.svg",
         "entry": "panel/index.html"
       },
