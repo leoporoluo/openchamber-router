@@ -1488,8 +1488,9 @@ function renderTabs(): void {
  */
 function mountHead(): void {
   clear(headRoot)
+  // The host's panel header already shows the extension name, so the body
+  // keeps no title of its own (this pane just anchors the refresh button).
   const left = el('div', 'oc-grow')
-  left.append(el('h1', 'oc-title', copy.title))
   const right = el('div', 'oc-actions')
   const refreshWrap = el('span')
   refreshBtn = mountButton(refreshWrap, { label: copy.refresh, variant: 'outline', size: 'sm', onClick: () => void reload() })
